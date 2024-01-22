@@ -11,14 +11,8 @@ def getSecret(source):
     if source=='jet':
         res=os.environ['test']
     return res
-
-env=os.environ['en']
-def getFilePath():
-    if env=='local':
-        file_path='/Users/abuhura/Desktop/QQQ.txt'
-    else:
-        file_path='/home/ec2-user/Quotes/QQQ.txt'
-    return file_path
+            
+file_path='/Users/abuhura/Desktop/QQQ.txt'  
 '''
 API_KEY = os.environ['ussr']
 API_SECRET = os.environ['test']
