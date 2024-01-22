@@ -12,7 +12,8 @@ mail_trigger=False
 file = open(auth.file_path,'r')
 res=file.read()
 data=res.split("\n")
-
+print(data)
+print(type(data))
 quotes=realQuote.defaultQuoteGenerator({})
 quotes=realQuote.storeQuotes(data,quotes)
 cur_val=quotes[formater.currentCandle(formater.getCurHoursMin())]

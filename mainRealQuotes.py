@@ -15,6 +15,3 @@ end_dt='2024-01-16'
 
 data=realQuote.getQuote(start_dt,end_dt)
 getStored.fileInput(data['results'])
-quotes=realQuote.defaultQuoteGenerator({})
-quotes=realQuote.storeQuotes(data['results'],quotes)
-print(quotes)
