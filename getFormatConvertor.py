@@ -5,30 +5,43 @@ used format such hours,mins as hh:min.
 import datetime
 from pytz import timezone
 from datetime import timedelta
+import os
 
 '''
 datetime library is widely used for datetime values. Hence, converting any values to datetime objects,
 gives more options to utilize further
 '''
-
+env=os.environ['en']
 def getHoursMin(millsec):
     dt=datetime.datetime.fromtimestamp(millsec / 1000.0, tz=datetime.timezone.utc)
     return dt.strftime("%H:%M")
 
 def getCurHoursMin():
-    now_pst = datetime.datetime.now()
     pacific= timezone('US/Pacific')
     eastern = timezone('US/Eastern')
-    dt1 = pacific.localize(now_pst, is_dst=True)
-    est_dt=dt1.astimezone(eastern)
-    return est_dt.strftime("%H:%M") 
+    if env=='local':
+        now_pst = datetime.datetime.now()
+        dt1 = pacific.localize(now_pst, is_dst=True)
+        est_dt=dt1.astimezone(eastern)
+    else:
+        now_utc = datetime.datetime.now()
+        est_dt=now_utc.astimezone(eastern)
+    return est_dt.strftime("%H:%M")
+ 
 
 def getCurHoursMinPST():
+    pacific= timezone('US/Pacific')
     now_pst = datetime.datetime.now()
-    return now_pst.strftime("%H:%M") 
+    if env!='local':
+        now_pst=now_pst.astimezone(pacific)
+    return now_pst.strftime("%H:%M")
 
 def getCurDate():
-    return datetime.datetime.now().strftime("%Y-%m-%d")
+    pacific= timezone('US/Pacific')
+    now_pst = datetime.datetime.now()
+    if env!='local':
+        now_pst=now_pst.astimezone(pacific)
+    return now_pst.strftime("%Y-%m-%d")
 
 def currentCandle(s):
     tm=s.split(":")
