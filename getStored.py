@@ -6,7 +6,7 @@ import json
 import getAuth as auth
 
 def fileInput(list):
-    file = open(auth.file_path,'w')
+    file = open(auth.getFilePath(),'w')
     for d in list:
         s=json.dumps(d)+'\n'
         file.write(s)
