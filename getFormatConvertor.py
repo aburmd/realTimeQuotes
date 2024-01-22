@@ -54,7 +54,7 @@ def getDate():
     tm = getCurHoursMin()
     res=tm.split(":")
     is_yesterday=False
-    if res[0] < '09':
+    if int(res[0]) <= 9 and int(res[1]) < 30:
         is_yesterday=True
     presentday=datetime.datetime.now()
     res=presentday
