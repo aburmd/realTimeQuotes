@@ -9,7 +9,7 @@ api_val=auth.getAPIKey('jet')
 api_token=auth.getSecret('jet')
 mail_trigger=False
 
-file = open(auth.file_path,'r')
+file = open(auth.getFilePath(),'r')
 res=file.read()
 data=res.split("\n")
 print(data)
