@@ -22,7 +22,7 @@ def defaultQuoteGenerator(quotes):
         key1='0'+str(i)+':'+'00'
         key2='0'+str(i)+':'+'30'
         quotes[key1]=random.choice([['101.01','100.01']])
-        quotes[key2]=random.choice([['100.01','100.01']])
+        quotes[key2]=random.choice([['101.01','100.01']])
     return quotes
     
 def storeQuotes(args,quotes):
