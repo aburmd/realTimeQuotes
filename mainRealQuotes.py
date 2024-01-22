@@ -7,8 +7,8 @@ import getStored
 api_val=auth.getAPIKey('poly')
 sqClient=SQ(api_key=api_val)
 
-start_dt=formater.getCurDate()
-end_dt=formater.getCurDate()
+start_dt=formater.getDate()
+end_dt=formater.getDate()
 '''
 start_dt='2024-01-16'
 end_dt='2024-01-16'
