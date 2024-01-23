@@ -20,7 +20,7 @@ def getQuote(startdate,enddate,typ):
         res=conv.convByteToDict(resBytes.data)
     elif typ=='tiingo':
         api_val=auth.getAPIKey('tiingo')
-        stock='tqqq'
+        stock='qqq'
         startDate=startdate
         url='https://api.tiingo.com/iex/{}/prices?startDate={}&resampleFreq=30min&columns=open,high,low,close,volume&token={}'.format(stock,startDate,api_val)
         requestResponse = requests.get(url, headers=headers)
