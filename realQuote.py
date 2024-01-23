@@ -3,19 +3,29 @@ import getAuth as auth
 import getTypeConvertor as conv
 import getFormatConvertor as formater
 import random
+import requests
 
-api_val=auth.getAPIKey('poly')
-sqClient=SQ(api_key=api_val)
+headers = {'Content-Type': 'application/json'}
 
-def getQuote(startdate,enddate):
+def getQuote(startdate,enddate,typ):
     '''
     Enter start and end date with YYYY-MM-DD format for getting aggregated quotes
     response stored as bytes
     '''
-    resBytes = conv.convHTTPResponseToByte(sqClient.get_aggs("QQQ",30,"minute",startdate,enddate,raw=True,))
-    res=conv.convByteToDict(resBytes.data)
+    res=''
+    if typ=='poly':
+        api_val=auth.getAPIKey('poly')
+        sqClient=SQ(api_key=api_val)
+        resBytes = conv.convHTTPResponseToByte(sqClient.get_aggs("QQQ",30,"minute",startdate,enddate,raw=True,))
+        res=conv.convByteToDict(resBytes.data)
+    elif typ=='tiingo':
+        api_val=auth.getAPIKey('tiingo')
+        stock='tqqq'
+        startDate=startdate
+        url='https://api.tiingo.com/iex/{}/prices?startDate={}&resampleFreq=30min&columns=open,high,low,close,volume&token={}'.format(stock,startDate,api_val)
+        requestResponse = requests.get(url, headers=headers)
+        res=requestResponse.json()
     return res
-
 
 def defaultQuoteGenerator(quotes):
     for i in range(24):
@@ -25,18 +35,21 @@ def defaultQuoteGenerator(quotes):
         quotes[key2]=random.choice([['101.01','100.01']])
     return quotes
     
-def storeQuotes(args,quotes):
+def storeQuotes(args,quotes,typ):
     quotes=defaultQuoteGenerator(quotes)
     outPut=args
-    for element in outPut:
-        if element=='':
-            continue
-        elementHashMap=conv.convStrToHashMap(element)
-        print(type(elementHashMap))
-        print(elementHashMap)
-        print(type(elementHashMap['t']))
-        print(elementHashMap['t'])
-        tm=formater.getHoursMin(elementHashMap['t'])
-        quotes[tm]=[elementHashMap['o'],elementHashMap['c']]
+    if typ=='poly':
+        for element in outPut:
+            if element=='':
+                continue
+            elementHashMap=conv.convStrToHashMap(element)
+            tm=formater.getHoursMin(elementHashMap['t'])
+            quotes[tm]=[elementHashMap['o'],elementHashMap['c']]
+    elif typ=='tiingo':
+        for element in outPut:
+            if element=='':
+                continue
+            elementHashMap=conv.convStrToHashMap(element)
+            tm=formater.getHoursMin(elementHashMap['date'],'tiingo')
+            quotes[tm]=[elementHashMap['open'],elementHashMap['close']]
     return quotes
-    

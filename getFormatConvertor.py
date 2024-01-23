@@ -12,8 +12,11 @@ datetime library is widely used for datetime values. Hence, converting any value
 gives more options to utilize further
 '''
 env=os.environ['en']
-def getHoursMin(millsec):
-    dt=datetime.datetime.fromtimestamp(millsec / 1000.0, tz=datetime.timezone.utc)
+def getHoursMin(date_string,typ):
+    if typ=='tiingo':
+        dt = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
+    else:
+        dt=datetime.datetime.fromtimestamp(date_string / 1000.0, tz=datetime.timezone.utc)
     return dt.strftime("%H:%M")
 
 def getCurHoursMin():
@@ -54,7 +57,7 @@ def getDate():
     tm = getCurHoursMin()
     res=tm.split(":")
     is_yesterday=False
-    if int(res[0]) <= 9 and int(res[1]) < 30:
+    if (int(res[0]) <= 1 and int(res[1]) < 30) or (int(res[0]) >= 20):
         is_yesterday=True
     presentday=datetime.datetime.now()
     res=presentday

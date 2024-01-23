@@ -15,7 +15,7 @@ data=res.split("\n")
 print(data)
 print(type(data))
 quotes=realQuote.defaultQuoteGenerator({})
-quotes=realQuote.storeQuotes(data,quotes)
+quotes=realQuote.storeQuotes(data,quotes,'tiingo')
 cur_val=quotes[formater.currentCandle(formater.getCurHoursMin())]
 
 if cur_val[1] < cur_val[0]:

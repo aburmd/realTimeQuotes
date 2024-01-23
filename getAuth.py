@@ -5,6 +5,8 @@ def getAPIKey(source):
         res='vubKg43HwaEXAfS6tDyrYlegAewlaJJM'
     elif source=='jet':
         res='7a6ab0e0362db8618aef78fdb9179fb6'
+    elif source=='tiingo':
+        res='4fbd748b05ea85b5d9cf97c69aabbcd31d58bdf9'
     return res
 
 def getSecret(source):
