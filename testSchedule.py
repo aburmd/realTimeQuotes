@@ -1,4 +1,4 @@
-import schedule
+from schedule import every, repeat, run_pending
 import time
 from mailjet_rest import Client as mail
 import getAuth as auth
@@ -7,7 +7,7 @@ import emailContent
 api_val=auth.getAPIKey('jet')
 api_token=auth.getSecret('jet')
 
-
+@repeat(every(1).minutes)
 def job():
     mail_trigger=True
     if mail_trigger:
@@ -18,8 +18,6 @@ def job():
         print(result)
     print("Job is running...")
 
-schedule.every(1).minutes.do(job)
-
 while True:
-    schedule.run_pending()
+    run_pending()
     time.sleep(1)
