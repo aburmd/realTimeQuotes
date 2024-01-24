@@ -3,12 +3,14 @@ import realQuote
 import getAuth as auth
 import getFormatConvertor as formater
 import getStored
+
 '''
+It should be UTC for tiingo API.
 start_dt=formater.getDate()
 end_dt=formater.getDate()
 print(start_dt)
 '''
-start_dt='2024-01-16'
+start_dt='2024-01-16' 
 end_dt='2024-01-16'
 
 
