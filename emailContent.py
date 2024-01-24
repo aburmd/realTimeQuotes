@@ -10,7 +10,11 @@ data = {
       "To": [
         {
           "Email": "abudigitalworld@gmail.com",
-          "Name": "You"
+          "Name": "AbuDigital"
+        },
+        {
+          "Email": "huraira86@gmail.com",
+          "Name": "ABH"
         }
       ],
       "Subject": "QQQ 30mins Candle is Red! Test",
