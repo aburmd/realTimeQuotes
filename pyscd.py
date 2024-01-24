@@ -16,9 +16,13 @@ def job():
 eastern_timezone = pytz.timezone('US/Eastern')
 
 # Schedule the job to run every 0th and 30th minute between 9 am to 5 pm
-for hour in range(9, 18):  # 9 am to 5 pm
+for hour in range(10, 17):  # 10 am to 4 pm
     schedule.every().hour.at(f"{hour:02d}:00").do(job)
     schedule.every().hour.at(f"{hour:02d}:30").do(job)
+    
+# Schedule the job to run exactly at 7:30 am every day
+schedule.every().day.at("07:30").do(job)
+schedule.every().day.at("07:32").do(job)
 
 while True:
     schedule.run_pending()
