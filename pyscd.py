@@ -8,11 +8,9 @@ env=os.environ['en']
 def job():
     print("Job executed at:", time.strftime("%Y-%m-%d %H:%M:%S"))
     if env=='local':
-        os.system("/usr/bin/python3 /Users/abuhura/Desktop/desktop_19thSep2023/Training/workspace/realTimeQuotes/mainRealQuotes.py &")
-        os.system("/usr/bin/python3 /Users/abuhura/Desktop/desktop_19thSep2023/Training/workspace/realTimeQuotes/mainSendmail.py &")
+        os.system("/usr/bin/python3 /Users/abuhura/Desktop/desktop_19thSep2023/Training/workspace/realTimeQuotes/test.py &")
     else:
-        os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/mainRealQuotes.py &")
-        os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/mainSendmail.py &")
+        os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/test.py &")
         
 # Set the time zone to Eastern Time (ET)
 eastern_timezone = pytz.timezone('US/Eastern')
