@@ -21,8 +21,8 @@ for hour in range(10, 17):  # 10 am to 4 pm
     schedule.every().hour.at(f"{hour:02d}:30").do(job)
     
 # Schedule the job to run exactly at 7:30 am every day
-schedule.every().day.at("07:30").do(job)
 schedule.every().day.at("07:32").do(job)
+schedule.every().day.at("07:34").do(job)
 
 while True:
     schedule.run_pending()
