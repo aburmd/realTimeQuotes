@@ -1,6 +1,7 @@
 import os
 import schedule
 import time
+import pytz
 
 env=os.environ['en']
 
@@ -13,8 +14,13 @@ def job():
         os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/mainRealQuotes.py &")
         os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/mainSendmail.py &")
         
-schedule.every().hour.at(":00").do(job)
-schedule.every().hour.at(":30").do(job)
+# Set the time zone to Eastern Time (ET)
+eastern_timezone = pytz.timezone('US/Eastern')
+
+# Schedule the job to run every 0th and 30th minute between 9 am to 5 pm
+for hour in range(9, 18):  # 9 am to 5 pm
+    schedule.every().hour.at(f"{hour:02d}:00").do(job)
+    schedule.every().hour.at(f"{hour:02d}:30").do(job)
 
 while True:
     schedule.run_pending()
