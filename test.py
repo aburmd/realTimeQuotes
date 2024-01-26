@@ -65,7 +65,7 @@ if priceDict[queryTime]['close'] < priceDict[queryTime]['open']:
 if mail_trigger:
     mailjet = mail(auth=(api_val, api_token), version='v3.1')
     email_message=emailContent.data
-    email_message['Messages'][0]['HTMLPart']+='</br>'+ "At {} {}, Mail Triggered with message as QQQ Current 30mins candle {} closes lesser than with open value {}".format(actualTime,priceDict[queryTime]['tz'],priceDict[queryTime]['close'],priceDict[queryTime]['open'])
+    email_message['Messages'][0]['HTMLPart']+='</br>'+ "At {} {}, QQQ Current 30mins candle {} closes lesser than with open value {}".format(actualTime,priceDict[queryTime]['tz'],priceDict[queryTime]['close'],priceDict[queryTime]['open'])
     result = mailjet.send.create(data=email_message)
     print("Mail Trggered with message as QQQ Current 30mins candle {} closes lesser than with open value {}".format(priceDict[queryTime]['close'],priceDict[queryTime]['open']))
 
