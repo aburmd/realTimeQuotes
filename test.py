@@ -60,13 +60,13 @@ print("The Current Time is {} {}".format(actualTime,priceDict[queryTime]['tz']))
 print("The corresponding queryTime is {} {}".format(queryTime,priceDict[queryTime]['tz']))
 print("Actual Value is {}".format(priceDict[queryTime]))
 
-if priceDict[queryTime]['close'] < priceDict[queryTime]['open']:
+if priceDict[queryTime]['close'] > priceDict[queryTime]['open']:
     mail_trigger=True
 if mail_trigger:
     mailjet = mail(auth=(api_val, api_token), version='v3.1')
     email_message=emailContent.data
-    email_message['Messages'][0]['HTMLPart']+='</br>'+ "At {} {}, QQQ Current 30mins candle {} closes lesser than with open value {}".format(actualTime,priceDict[queryTime]['tz'],priceDict[queryTime]['close'],priceDict[queryTime]['open'])
+    email_message['Messages'][0]['HTMLPart']+='</br>'+ "At {} {}, Looks like Down-to-Up move, QQQ Current 30mins candle {} open lesser than with close value {}".format(actualTime,priceDict[queryTime]['tz'],priceDict[queryTime]['close'],priceDict[queryTime]['open'])
     result = mailjet.send.create(data=email_message)
-    print("Mail Trggered with message as QQQ Current 30mins candle {} closes lesser than with open value {}".format(priceDict[queryTime]['close'],priceDict[queryTime]['open']))
+    print("Mail Trggered with message as QQQ Current 30mins candle {} open lesser than with close value {}".format(priceDict[queryTime]['close'],priceDict[queryTime]['open']))
 
 print("Job Executed")
