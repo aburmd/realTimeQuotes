@@ -14,7 +14,7 @@ def getPreferTZDate(tmzone,datevalue=None):
     '''Pick anyone from the list of timeZone and pass it on to get the prefer timezone dateTime
        US/Eastern,America/Los_Angeles '''
     # Get the current UTC time  
-    utc_val = datetime.datetime.utcnow()
+    utc_val = datetime.datetime.utcnow() - datetime.timedelta(hours=0)
     if datevalue:
         utc_val=datevalue
     # Find the prefer timezone
@@ -53,3 +53,9 @@ def round_down_to_nearest_30_minutes(time_str):
     rounded_time_30 = rounded_time - datetime.timedelta(minutes=30)
     rounded_time_str = rounded_time_30.strftime("%H:%M")
     return rounded_time_str
+
+def timeZoneFinder(s):
+    dct={'-0800':'PST','-0500':'EST','+0000':'UTC'}
+    if s in dct:
+        return dct[s]
+    return s
