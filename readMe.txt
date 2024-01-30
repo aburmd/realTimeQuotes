@@ -32,6 +32,7 @@ pip3 install mailjet-rest
 echo 'export en=EC2' >> ~/.bashrc
 echo 'export test=bbfdea59aa1c732b37f66d5c7fd3fe08' >> ~/.bashrc
 echo 'export tmz=pst' >> ~/.bashrc
+echo 'export trend=up' >> ~/.bashrc
 source ~/.bash_profile
 mkdir ~/DataStore
 touch ~/DataStore/trend.txt
