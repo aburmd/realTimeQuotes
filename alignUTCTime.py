@@ -14,7 +14,7 @@ def getPreferTZDate(tmzone,datevalue=None):
     '''Pick anyone from the list of timeZone and pass it on to get the prefer timezone dateTime
        US/Eastern,America/Los_Angeles '''
     # Get the current UTC time  
-    utc_val = datetime.datetime.utcnow() - datetime.timedelta(hours=0)
+    utc_val = datetime.datetime.utcnow() - datetime.timedelta(hours=7)
     if datevalue:
         utc_val=datevalue
     # Find the prefer timezone

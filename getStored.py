@@ -6,7 +6,7 @@ import json
 import getAuth as auth
 
 def fileInput(list):
-    file = open(auth.getFilePath(),'w')
+    file = open(auth.getFilePath,'w')
     i=0
     for d in list:
         s=json.dumps(d)+'\n'
@@ -15,8 +15,12 @@ def fileInput(list):
     file.close()
     print("File saved successfully with {} no of lines stored".format(i))
     
-def fileWriter(list):
-    file = open(auth.getFilePath(),'w')
+def fileWriter(list,filetype):
+    file=''
+    if filetype=='store':
+        file = open(auth.getFilePath(),'w')
+    else:
+        file = open(auth.getTrendPath(),'w')
     i=0
     for d in list:
         s=json.dumps(d)+'\n'
@@ -25,8 +29,11 @@ def fileWriter(list):
     file.close()
     print("File saved successfully with {} no of lines stored".format(i))
     
-def fileReader():
-    file = open(auth.getFilePath(),'r')
+def fileReader(filetype):
+    if filetype=='store':
+        file = open(auth.getFilePath(),'r')
+    else:
+        file = open(auth.getTrendPath(),'r')
     res=file.read()
     data=res.split("\n")
     print("File Available with {} of entries,the function reads from file and stored with type as {}.".format(len(data),type(data)))

@@ -20,3 +20,26 @@ Hello Abu, here's a quick overview of today's market trends. Based on the curren
 4hrs Up, 30mins down:
 <h3> Hello Abu, 30mins Candle Green </h3>
 Hi Abu, I wanted to share a quick summary of today's market trends with you. Currently, the market is showing a predominant downward trend, but there are indications of a possible reversal to an upward trend. This analysis is based on the 4-hour timeframe, which suggests an UpTrend. However, it's important to note that the 30-minute timeframe is currently showing a downward trend, and the alignment with the 4-hour trend is not consistent. The most recent 30-minute candle hints at a potential reversal, and this possibility becomes more significant if the 5-minute candle confirms the trend reversal after the observed 30-minute candle. Stay composed, take a deep breath, and make informed decisions! Best wishes for successful trading!
+
+bootsrtap.sh 
+
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+pip3 install awsebcli --upgrade --user
+pip3 install -U polygon-api-client
+pip3 install schedule
+pip3 install mailjet-rest 
+echo 'export en=EC2' >> ~/.bashrc
+echo 'export test=bbfdea59aa1c732b37f66d5c7fd3fe08' >> ~/.bashrc
+echo 'export tmz=pst' >> ~/.bashrc
+source ~/.bash_profile
+mkdir ~/DataStore
+touch ~/DataStore/trend.txt
+mkdir ~/workspace
+cd ~/workspace
+sudo dnf install git-all
+git clone https://github.com/aburmd/realTimeQuotes.git
+cd ~/
+nohup python3 ~/workspace/realTimeQuotes/marketWatcher.py &
+
+
