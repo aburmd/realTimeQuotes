@@ -9,7 +9,7 @@ pip3 install boto3
 echo 'export en=EC2' >> ~/.bashrc
 echo 'export test=bbfdea59aa1c732b37f66d5c7fd3fe08' >> ~/.bashrc
 echo 'export tmz=pst' >> ~/.bashrc
-echo 'export trend=up' >> ~/.bashrc
+echo 'export Trend=up' >> ~/.bashrc
 source ~/.bash_profile
 source ~/.bashrc
 mkdir ~/DataStore
