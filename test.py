@@ -65,20 +65,26 @@ if Trend=="up":
         print(Trend)
         mail_trigger=True
         email_message=emailContent.data
+        email_message['Messages'][0]['To'][0]['Email']='seng'
+        email_message['Messages'][0]['To'][0]['Name']='Ab'
         head='Trend Reversal' + '-' + 'Red(Possibly going down)' + '-' + "Executed From {} Machine".format(env)
         email_message['Messages'][0]['Subject'] = head
         body="Mail Trggered - Recent observations in the QQQ candle, showing an opening at {} and a closing at {}, suggest a possible trend reversal".format(priceDict[queryTime]['open'],priceDict[queryTime]['close'])
         email_message['Messages'][0]['HTMLPart'] = '<h3> '+ body +'<\h3>'
+        email_message['Messages'][0]['To'][0]['Email']+='s87@gmail.com'
 else:
     if priceDict[queryTime]['open'] < priceDict[queryTime]['close']:
         print('F')
         print(Trend)
         mail_trigger=True
-        email_message=emailContent.data 
+        email_message=emailContent.data
+        email_message['Messages'][0]['To'][0]['Email']='seng'
+        email_message['Messages'][0]['To'][0]['Name']='Ab' 
         head='Trend Reversal' + '-' + 'Green(Possibly going up)' + '-' + "Executed From {} Machine".format(env)
         email_message['Messages'][0]['Subject'] = head
         body="Mail Trggered - Recent observations in the QQQ candle, showing an opening at {} and a closing at {}, suggest a possible trend reversal".format(priceDict[queryTime]['open'],priceDict[queryTime]['close'])
         email_message['Messages'][0]['HTMLPart'] = '<h3> '+ body +'<\h3>'
+        email_message['Messages'][0]['To'][0]['Email']+='s87@gmail.com'
            
 if mail_trigger:
     if Trend=="up":

@@ -13,3 +13,12 @@ def listInstances():
 
 def getTerminateInstance(instance):
     return ec2.terminate_instances(InstanceIds=[instance])
+
+def job():
+    instancesList=listInstances()
+    responseList=[]
+    for i in instancesList:
+        responseList.append(getTerminateInstance(i))
+        print("Running EC2 Intance:{} is terminated".format(i))
+
+job()

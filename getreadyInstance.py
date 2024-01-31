@@ -1,16 +1,12 @@
 import schedule
 import time
 from datetime import datetime
-import removeInstance as removeInstance
+import addInstance
 import os
 
 def job():
-    instancesList=removeInstance.listInstances()
-    responseList=[]
-    for i in instancesList:
-        responseList.append(removeInstance.getTerminateInstance(i))
-        print("Running EC2 Intance:{} is terminated".format(i))
-    print(f"Job executed at: {datetime.now()}")
+    addInstance.create()
+    
 
 # Schedule the job
 if os.environ['en']=='local':
