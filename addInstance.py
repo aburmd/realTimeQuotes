@@ -3,24 +3,27 @@ import boto3
 # Your bootstrap script
 user_data_script = """
 #!/bin/bash
-su - ec2-user -c 'curl -O https://bootstrap.pypa.io/get-pip.py'
-su - ec2-user -c 'python3 get-pip.py --user'
-su - ec2-user -c 'pip3 install awsebcli --upgrade --user'
-su - ec2-user -c 'pip3 install -U polygon-api-client'
-su - ec2-user -c 'pip3 install schedule'
-su - ec2-user -c 'pip3 install mailjet-rest'
-su - ec2-user -c 'pip3 install boto3' 
-su - ec2-user -c 'echo 'export en=EC2' >> ~/.bashrc'
-su - ec2-user -c 'echo 'export test=bbfdea59aa1c732b37f66d5c7fd3fe08' >> ~/.bashrc'
-su - ec2-user -c 'echo 'export tmz=pst' >> ~/.bashrc'
-su - ec2-user -c 'echo 'export Trend=up' >> ~/.bashrc'
-su - ec2-user -c 'source ~/.bash_profile'
-su - ec2-user -c 'source ~/.bashrc'
-su - ec2-user -c 'mkdir ~/DataStore'
-su - ec2-user -c 'touch ~/DataStore/trend.txt'
-su - ec2-user -c 'mkdir ~/workspace'
-su - ec2-user -c 'sudo dnf install git-all -y'
-su - ec2-user -c 'git clone https://github.com/aburmd/realTimeQuotes.git ~/workspace'
+curl -O https://bootstrap.pypa.io/get-pip.py
+python3 get-pip.py --user
+pip3 install awsebcli --upgrade --user
+pip3 install -U polygon-api-client
+pip3 install schedule
+pip3 install mailjet-rest
+pip3 install boto3
+echo 'export en=EC2' >> ~/.bashrc
+echo 'export test=bbfdea59aa1c732b37f66d5c7fd3fe08' >> ~/.bashrc
+echo 'export tmz=pst' >> ~/.bashrc
+echo 'export Trend=up' >> ~/.bashrc
+source ~/.bash_profile
+source ~/.bashrc
+mkdir ~/DataStore
+touch ~/DataStore/trend.txt
+mkdir ~/workspace
+sudo dnf install git-all -y
+cd ~/workspace
+git clone https://github.com/aburmd/realTimeQuotes.git
+cd ~
+nohup python3 ~/workspace/realTimeQuotes/test.py &
 """
 
 # Create an EC2 resource
