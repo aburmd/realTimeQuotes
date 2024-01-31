@@ -1,30 +1,7 @@
 import boto3
 
 # Your bootstrap script
-user_data_script = """
-#!/bin/bash
-curl -O https://bootstrap.pypa.io/get-pip.py
-python3 get-pip.py --user
-pip3 install awsebcli --upgrade --user
-pip3 install -U polygon-api-client
-pip3 install schedule
-pip3 install mailjet-rest
-pip3 install boto3
-echo 'export en=EC2' >> ~/.bashrc
-echo 'export test=bbfdea59aa1c732b37f66d5c7fd3fe08' >> ~/.bashrc
-echo 'export tmz=pst' >> ~/.bashrc
-echo 'export Trend=up' >> ~/.bashrc
-source ~/.bash_profile
-source ~/.bashrc
-mkdir ~/DataStore
-touch ~/DataStore/trend.txt
-mkdir ~/workspace
-sudo dnf install git-all -y
-cd ~/workspace
-git clone https://github.com/aburmd/realTimeQuotes.git
-cd ~
-nohup python3 ~/workspace/realTimeQuotes/test.py &
-"""
+user_data_script = "IyEvYmluL2Jhc2gKY3VybCAtTyBodHRwczovL2Jvb3RzdHJhcC5weXBhLmlvL2dldC1waXAucHkKcHl0aG9uMyBnZXQtcGlwLnB5IC0tdXNlcgpwaXAzIGluc3RhbGwgYXdzZWJjbGkgLS11cGdyYWRlIC0tdXNlcgpwaXAzIGluc3RhbGwgLVUgcG9seWdvbi1hcGktY2xpZW50CnBpcDMgaW5zdGFsbCBzY2hlZHVsZQpwaXAzIGluc3RhbGwgbWFpbGpldC1yZXN0CnBpcDMgaW5zdGFsbCBib3RvMwplY2hvICdleHBvcnQgZW49RUMyJyA+PiB+Ly5iYXNocmMKZWNobyAnZXhwb3J0IHRlc3Q9YmJmZGVhNTlhYTFjNzMyYjM3ZjY2ZDVjN2ZkM2ZlMDgnID4+IH4vLmJhc2hyYwplY2hvICdleHBvcnQgdG16PXBzdCcgPj4gfi8uYmFzaHJjCmVjaG8gJ2V4cG9ydCBUcmVuZD11cCcgPj4gfi8uYmFzaHJjCnNvdXJjZSB+Ly5iYXNoX3Byb2ZpbGUKc291cmNlIH4vLmJhc2hyYwpta2RpciB+L0RhdGFTdG9yZQp0b3VjaCB+L0RhdGFTdG9yZS90cmVuZC50eHQKbWtkaXIgfi93b3Jrc3BhY2UKc3VkbyBkbmYgaW5zdGFsbCBnaXQtYWxsIC15CmNkIH4vd29ya3NwYWNlCmdpdCBjbG9uZSBodHRwczovL2dpdGh1Yi5jb20vYWJ1cm1kL3JlYWxUaW1lUXVvdGVzLmdpdApjZCB+Cm5vaHVwIHB5dGhvbjMgfi93b3Jrc3BhY2UvcmVhbFRpbWVRdW90ZXMvdGVzdC5weSAm"
 
 # Create an EC2 resource
 ec2 = boto3.resource('ec2')
