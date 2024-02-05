@@ -15,12 +15,16 @@ def fileInput(list):
     file.close()
     print("File saved successfully with {} no of lines stored".format(i))
     
-def fileWriter(list,filetype):
+def fileWriter(list,filetype,stock=None):
     file=''
     if filetype=='store':
-        file = open(auth.getFilePath(),'w')
+        path=auth.getFilePath()
+        path+=stock+'.txt'
+        file = open(path,'w')
     else:
-        file = open(auth.getTrendPath(),'w')
+        path=auth.getTrendPath()
+        path+=stock+'.txt'        
+        file = open(path,'w')
     i=0
     for d in list:
         s=json.dumps(d)+'\n'
@@ -29,11 +33,15 @@ def fileWriter(list,filetype):
     file.close()
     print("File saved successfully with {} no of lines stored".format(i))
     
-def fileReader(filetype):
+def fileReader(filetype,stock=None):
     if filetype=='store':
-        file = open(auth.getFilePath(),'r')
+        path=auth.getFilePath()
+        path+=stock+'.txt'
+        file = open(path,'r')
     else:
-        file = open(auth.getTrendPath(),'r')
+        path=auth.getTrendPath()
+        path+=stock+'.txt'
+        file = open(path,'r')
     res=file.read()
     data=res.split("\n")
     print("File Available with {} of entries,the function reads from file and stored with type as {}.".format(len(data),type(data)))

@@ -20,9 +20,11 @@ def job():
         if int(localTimeHour) in range(10,16):
             print("Good news! The market is now open, and I'm eager to monitor your stock price. I'll keep you informed if your conditions align positively.")
             if env=='local':
-                os.system("/usr/bin/python3 /Users/abuhura/Desktop/desktop_19thSep2023/Training/workspace/realTimeQuotes/test.py &")
+                os.system("/usr/bin/python3 /Users/abuhura/Desktop/desktop_19thSep2023/Training/workspace/realTimeQuotes/test.py qqq &")
+                os.system("/usr/bin/python3 /Users/abuhura/Desktop/desktop_19thSep2023/Training/workspace/realTimeQuotes/test.py fngu &")
             else:
-                os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/test.py &")
+                os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/test.py qqq &")
+                os.system("/usr/bin/python3 /home/ec2-user/workspace/realTimeQuotes/test.py fngu &")
         else:
             print("The market has closed. I trust you had a fantastic day of trading!")
         job_executed = True

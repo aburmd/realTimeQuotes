@@ -17,16 +17,16 @@ def getSecret(source):
 env=os.environ['en']
 def getFilePath():
     if env=='local':
-        dataPath='/Users/abuhura/Desktop/DataStore/QQQ.txt'
+        dataPath='/Users/abuhura/Desktop/DataStore/'
     else:
-        dataPath='/home/ec2-user/DataStore/QQQ.txt'
+        dataPath='/home/ec2-user/DataStore/'
     return dataPath
 
 def getTrendPath():
     if env=='local':
-        trendPath='/Users/abuhura/Desktop/DataStore/trend.txt'
+        trendPath='/Users/abuhura/Desktop/DataStore/trend/'
     else:
-        trendPath='/home/ec2-user/DataStore/trend.txt'
+        trendPath='/home/ec2-user/DataStore/trend/'
     return trendPath
              
 '''

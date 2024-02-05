@@ -6,6 +6,7 @@ import getFormatConvertor as frmt
 import getAuth as auth
 import os
 import json
+import sys
 
 from mailjet_rest import Client as mail
 import emailContent
@@ -13,7 +14,8 @@ api_val=auth.getAPIKey('jet')
 api_token=auth.getSecret('jet')
 mail_trigger=False
 env=os.environ['en']
-trendChk=getStored.fileReader('trend')
+stock=sys.argv[1]
+trendChk=getStored.fileReader('trend',stock)
 if trendChk[0]=='':
     Trend=os.environ['Trend']
 else:
@@ -26,15 +28,14 @@ res=alignUTCTime.getPreferTZDate(tmz)
 startdate=res.strftime("%Y-%m-%d")
 enddate=res.strftime("%Y-%m-%d")
 typ='tiingo'
-stock='qqq'
 headers = {'Content-Type': 'application/json'}
 dataOutput=realQuote.getQuote1(startdate,enddate,typ,stock)
 #This data(dataOutput) is available in list, it gets stored in a file.
-getStored.fileWriter(dataOutput,'store')
+getStored.fileWriter(dataOutput,'store',stock)
 print("Verify Current Time")
 print("Current Time with timezone is {} and {}".format(res.strftime("%H:%M"),tmz))
 print("verify {} mins candle price for the stock {}".format(30,stock))
-priceList=getStored.fileReader('store')
+priceList=getStored.fileReader('store',stock)
 print("price gets stored in dictionary with key as candle interval \n")
 print(" and value as actual record,here it gets stored as {} {} interval".format(30,'Min'))
 priceDict={}
@@ -67,9 +68,9 @@ if Trend=="up":
         email_message=emailContent.data
         email_message['Messages'][0]['To'][0]['Email']='seng'
         email_message['Messages'][0]['To'][0]['Name']='Ab'
-        head='Trend Reversal' + '-' + 'Red(Possibly going down)' + '-' + "Executed From {} Machine".format(env)
+        head='Trend Reversal for {}'.format(stock.upper()) + '-' + 'Red(Possibly going down)' + '-' + "Executed From {} Machine".format(env)
         email_message['Messages'][0]['Subject'] = head
-        body="Mail Trggered - Recent observations in the QQQ candle, showing an opening at {} and a closing at {}, suggest a possible trend reversal".format(priceDict[queryTime]['open'],priceDict[queryTime]['close'])
+        body="Mail Trggered - Recent observations in the {} candle, showing an opening at {} and a closing at {}, suggest a possible trend reversal".format(stock.upper(),priceDict[queryTime]['open'],priceDict[queryTime]['close'])
         email_message['Messages'][0]['HTMLPart'] = '<h3> '+ body +'<\h3>'
         email_message['Messages'][0]['To'][0]['Email']+='s87@gmail.com'
 else:
@@ -80,19 +81,19 @@ else:
         email_message=emailContent.data
         email_message['Messages'][0]['To'][0]['Email']='seng'
         email_message['Messages'][0]['To'][0]['Name']='Ab' 
-        head='Trend Reversal' + '-' + 'Green(Possibly going up)' + '-' + "Executed From {} Machine".format(env)
+        head='Trend Reversal for {}'.format(stock.upper()) + '-' + 'Green(Possibly going up)' + '-' + "Executed From {} Machine".format(env)
         email_message['Messages'][0]['Subject'] = head
-        body="Mail Trggered - Recent observations in the QQQ candle, showing an opening at {} and a closing at {}, suggest a possible trend reversal".format(priceDict[queryTime]['open'],priceDict[queryTime]['close'])
+        body="Mail Trggered - Recent observations in the {} candle, showing an opening at {} and a closing at {}, suggest a possible trend reversal".format(stock.upper(),priceDict[queryTime]['open'],priceDict[queryTime]['close'])
         email_message['Messages'][0]['HTMLPart'] = '<h3> '+ body +'<\h3>'
         email_message['Messages'][0]['To'][0]['Email']+='s87@gmail.com'
            
 if mail_trigger:
     if Trend=="up":
         print("success")
-        getStored.fileWriter([{'trend':'down'}],'trend')
+        getStored.fileWriter([{'trend':'down'}],'trend',stock)
         print("Job Executed with mail Trigger - Reversal occur and going to {} trend".format('down'))
     else:
-        getStored.fileWriter([{'trend':'up'}],'trend')
+        getStored.fileWriter([{'trend':'up'}],'trend',stock)
         print("Job Executed with mail Trigger - Reversal occur and going to {} trend".format('up'))
     mailjet = mail(auth=(api_val, api_token), version='v3.1')
     result = mailjet.send.create(data=email_message)

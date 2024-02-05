@@ -13,7 +13,9 @@ echo 'export Trend=up' >> ~/.bashrc
 source ~/.bash_profile
 source ~/.bashrc
 mkdir ~/DataStore
-touch ~/DataStore/trend.txt
+mkdir ~/DataStore/trend
+touch ~/DataStore/trend/qqq.txt
+touch ~/DataStore/trend/fngu.txt
 mkdir ~/workspace
 sudo dnf install git-all -y
 cd ~/workspace
