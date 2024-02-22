@@ -13,6 +13,8 @@ echo 'export Trend=up' >> ~/.bashrc
 source ~/.bash_profile
 source ~/.bashrc
 mkdir ~/DataStore
+mkdir ~/DataStore/data
+mkdir ~/DataStore/metadata
 mkdir ~/DataStore/trend
 touch ~/DataStore/trend/qqq.txt
 touch ~/DataStore/trend/fngu.txt
@@ -21,4 +23,4 @@ sudo dnf install git-all -y
 cd ~/workspace
 git clone https://github.com/aburmd/realTimeQuotes.git
 cd ~
-nohup python3 ~/workspace/realTimeQuotes/test.py &
+nohup python3 ~/workspace/realTimeQuotes/marketWatcher.py &

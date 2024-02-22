@@ -3,28 +3,30 @@ This library helps to convert a format of a data from rare format to commonly
 used format such hours,mins as hh:min.
 '''
 import datetime
-from pytz import timezone
-from datetime import timedelta
+import pytz
 import os
-
+from zoneinfo import ZoneInfo
+import alignUTCTime
+timeZoneDict={'PT':'US/Pacific','UTC':'UTC','ET':'US/Eastern','IST':'Asia/Calcutta'}
 '''
 datetime library is widely used for datetime values. Hence, converting any values to datetime objects,
 gives more options to utilize further
 '''
 env=os.environ['en']
 tmz=os.environ['tmz']
+tz=os.environ['tz']
 def getHoursMin(date_string,typ):
     if typ=='tiingo':
         dt = datetime.datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%S.%fZ')
     else:
         dt=datetime.datetime.fromtimestamp(date_string / 1000.0, tz=datetime.timezone.utc)
-        pacific= timezone('US/Pacific')
+        pacific= pytz.timezone('US/Pacific')
         dt=dt.astimezone(pacific)
     return dt.strftime("%H:%M")
 
 def getCurHoursMin():
-    pacific= timezone('US/Pacific')
-    eastern = timezone('US/Eastern')
+    pacific= pytz.timezone('US/Pacific')
+    eastern = pytz.timezone('US/Eastern')
     if (tmz == 'local' or tmz == 'pst'):
         now_pst = datetime.datetime.now()
         est_dt = pacific.localize(now_pst, is_dst=True)
@@ -37,14 +39,14 @@ def getCurHoursMin():
  
 
 def getCurHoursMinPST():
-    pacific= timezone('US/Pacific')
+    pacific= pytz.timezone('US/Pacific')
     now_pst = datetime.datetime.now()
     if not (tmz == 'local' or tmz == 'pst'):
         now_pst=now_pst.astimezone(pacific)
     return now_pst.strftime("%H:%M")
 
 def getCurDate():
-    pacific= timezone('US/Pacific')
+    pacific= pytz.timezone('US/Pacific')
     now_pst = datetime.datetime.now()
     if not (tmz == 'local' or tmz == 'pst'):
         now_pst=now_pst.astimezone(pacific)
@@ -70,12 +72,78 @@ def getDate():
     presentday=datetime.datetime.now()
     res=presentday
     if is_yesterday:
-        yesterday = presentday - timedelta(1)
+        yesterday = presentday - datetime.timedelta(1)
         if yesterday.isoweekday()==7:
-            res = presentday - timedelta(3)
+            res = presentday - datetime.timedelta(3)
         elif yesterday.isoweekday()==6:
-            res = presentday - timedelta(2)
+            res = presentday - datetime.timedelta(2)
         else:
             res=yesterday
     return res.strftime("%Y-%m-%d")
+
+def getPreferTZDate(tmzone,datevalue=None):
+    '''Pick anyone from the list of timeZone and pass it on to get the prefer timezone dateTime
+       US/Eastern,America/Los_Angeles '''
+    # Get the current UTC time  
+    utc_val = datetime.datetime.utcnow() - datetime.timedelta(hours=0, minutes=0)
+    if datevalue:
+        utc_val=datevalue
+    # Find the prefer timezone
+    prefer_timezone = pytz.timezone(tmzone)
+    # Convert UTC time to prefer time
+    prefer_timezone_val = utc_val.replace(tzinfo=pytz.utc).astimezone(prefer_timezone)
+    # Print the local time and timezone
+    #print("Time:", prefer_timezone_val.strftime('%Y-%m-%d %H:%M:%S'))
+    #print("Timezone:", prefer_timezone_val)
+    return prefer_timezone_val
+
+''' Only below are being used'''
+
+def convSTDDateTime(restype,date_string,format='%Y-%m-%dT%H:%M:%S.%fZ'):
+    '''
+    Please refer the format input and apply the format in string. 
+    refer: https://docs.python.org/3/library/datetime.html#strftime-and-strptime-format-codes
+    For tiingo, '%Y-%m-%dT%H:%M:%S.%fZ'
+    '''
+    dt=''
+    if restype=='tiingo':
+        dt = datetime.datetime.strptime(date_string, format)
+        prefer_timezone = pytz.timezone(timeZoneDict[tz])
+        dt_prefer=dt.replace(tzinfo=pytz.utc).astimezone(prefer_timezone).strftime("%Y-%m-%d %H:%M")
+    elif restype=='twData':
+        format='%Y-%m-%d %H:%M:%S'
+        dt = datetime.datetime.strptime(date_string, format)
+        prefer_timezone = pytz.timezone(timeZoneDict[tz])
+        dt_prefer=dt.replace(tzinfo=ZoneInfo(timeZoneDict['ET'])).astimezone(prefer_timezone).strftime("%Y-%m-%d %H:%M")
+    elif restype=='poly':
+        dt = datetime.datetime.fromtimestamp(date_string / 1000.0, tz=datetime.timezone.utc)
+        prefer_timezone = pytz.timezone(timeZoneDict[tz])
+        dt_prefer=dt.replace(tzinfo=pytz.utc).astimezone(prefer_timezone).strftime("%Y-%m-%d %H:%M")
+    return dt_prefer
     
+def stdResponse(restype,result,*arg):
+    mn='30'
+    if len(arg)>0:
+        mn=arg[0]
+    convertor=result
+    dtformat='%Y-%m-%dT%H:%M:%S.%fZ' if restype=='tiingo' else ''
+    resList=[]
+    for r in convertor:
+        dict={}
+        if restype=='poly':
+            dict['date'],dict['open'],dict['high'],dict['low'],dict['close'],dict['volume'],dict['tz']=convSTDDateTime(restype,r['t'],dtformat),r['o'],r['h'],r['l'],r['c'],r['v'],tz
+            resList.append(dict)
+        elif restype=='tiingo':
+            r['date']=convSTDDateTime(restype,r['date'],dtformat)
+            if r['date'] > alignUTCTime.round_down_to_nearest_30_minutes1(alignUTCTime.getPreferTZDate('US/Pacific').strftime("%Y-%m-%d %H:%M"),mn):
+                continue
+            r['tz']=tz
+            resList.append(r)
+        elif restype=='twData':
+            r['date']=convSTDDateTime(restype,r['datetime'],dtformat)
+            if r['date'] > alignUTCTime.round_down_to_nearest_30_minutes1(alignUTCTime.getPreferTZDate('US/Pacific').strftime("%Y-%m-%d %H:%M"),mn):
+                continue
+            r['tz']=tz
+            del r['datetime']
+            resList.append(r)
+    return resList

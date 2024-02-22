@@ -44,3 +44,21 @@ cd ~/
 nohup python3 ~/workspace/realTimeQuotes/marketWatcher.py &
 
 
+
+Here's a simplified overview of our process:
+
+1) Initial Setup: The script initialFileCreate.py prepares necessary files in the specified path.
+2) Every 30 Minutes:
+   a) query30.py runs to publish the quote precisely every 30 minutes.
+   b) main.py checks if the last candle has reversed its trend. If it has, it updates the metadata to indicate a 'start' signal for 5-minute tracking.
+3) Every 5 Minutes:
+   a) query5.py is scheduled to run, but it first checks if the 'start' signal for 5-minute tracking is active. If it is, it publishes a 5-minute quote.
+   b) Alongside, main5.py tracks the lowest value in the last 30 minutes and updates it as needed until a reversal trend is identified. Upon finding a reversal, it updates the metadata with specific value indicators and signals a 'start' for reversal tracking.
+4) Reversal Tracking:
+   a) main5R.py activates upon the 'start' reversal signal, comparing current 5-minute highs/lows against previous markers. Depending on the outcome, it categorizes the result as 'False' or 'Execute' and updates the metadata to stop 5-minute tracking.
+5) Completion:
+   a)Once the 'stop' signal is issued for 5-minute tracking, query5.py pauses its publishing task, and both main5.py and main5R.py conclude their operations until the next 'start' signal.
+
+This sequence ensures our system dynamically updates and responds based on specific trend reversals and predefined intervals.
+
+

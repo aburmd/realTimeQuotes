@@ -54,6 +54,17 @@ def round_down_to_nearest_30_minutes(time_str):
     rounded_time_str = rounded_time_30.strftime("%H:%M")
     return rounded_time_str
 
+def round_down_to_nearest_30_minutes1(time_str,*arg):
+    mn=30
+    if len(arg)>0:
+        mn=int(arg[0])
+    dt = datetime.datetime.strptime(time_str, "%Y-%m-%d %H:%M")
+    base_time = datetime.datetime(dt.year, dt.month, dt.day, dt.hour, 0, 0)
+    rounded_time = base_time + datetime.timedelta(minutes=(dt.minute // mn) * mn)
+    rounded_time_30 = rounded_time - datetime.timedelta(minutes=mn)
+    rounded_time_str = rounded_time_30.strftime("%Y-%m-%d %H:%M")
+    return rounded_time_str
+
 def timeZoneFinder(s):
     dct={'-0800':'PST','-0500':'EST','+0000':'UTC'}
     if s in dct:
