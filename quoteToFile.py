@@ -23,7 +23,8 @@ def quoteStore(stock,duration):
 
 def quoteStoreIndex(stock,duration):
     tz=os.environ['tz']
-    date=alignUTCTime.getPreferTZDate(frmt.timeZoneDict[tz]).strftime("%Y-%m-%d")
+    #date=alignUTCTime.getPreferTZDate(frmt.timeZoneDict[tz]).strftime("%Y-%m-%d")
+    date='2024-02-21'
     apitype='twData'
     durationType='min'
     # Request the stock price

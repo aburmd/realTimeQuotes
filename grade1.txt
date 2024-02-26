@@ -1,0 +1,64 @@
+1) Load the 1 min data into table 'indx' with column as below
+stk TEXT,qdate TEXT,open decimal,high decimal,low decimal,close decimal,
+curH decimal,curHdt TEXT,
+curL decimal,curLdt TEXT
+-- This provides the data as well as recent low and recent high gets stored on every row
+
+2) run the below query to build a trend uisng these dataset:
+drop table temp;
+drop table temp1;
+drop table temp2;
+drop table trend;
+drop table temp3;
+drop table temp4;
+drop table trendReversal;
+
+create temporary table temp as 
+select * from indx order by julianday(strftime(qdate));
+
+create temporary table temp1 as 
+ select  quDT,qu,Ttype  from
+(select quDT,qu,Ttype from 
+(select curHDt as quDT, curH as qu, 'H' as  Ttype,
+row_number() over(PARTITION by curLDT order by qdate desc) as HHrnk from temp) where HHrnk=1
+UNION
+select quDT,qu,Ttype from 
+(select curLDt as quDT, curL as qu, 'L' as  Ttype,
+row_number() over(PARTITION by curHDt order by qdate) as LLrnk from temp) where LLrnk=1)
+order by 1,2,3;
+
+create temporary table temp2 as 
+select * from temp1 a
+where not exists(select 1 from (select quDT from temp1 group by quDT having count(1) >1) b
+where a.quDT=b.quDT) order by quDT,qu,Ttype;
+
+create table trend as 
+select quDT,qu, Ttype from 
+(select quDT,qu, Ttype,
+round(((julianday(strftime(quDT)) - case when prequDT is null then 0 else julianday(strftime(prequDT)) end )*24*60)/1) as preIntr
+from 
+(select *, lag(quDT,1) over( order by quDT) as prequDT from temp2))
+where preIntr>1
+order by quDT,qu, Ttype;
+
+create table temp3 as 
+select quDT,qu, Ttype, 
+lead(Ttype,1) over(order by quDT) as Leadby1TYpe,
+lag(Ttype,1) over(order by quDT) as Lagby1TYpe
+from trend
+
+create table temp4 as 
+select * from temp3 where not ((Ttype=Leadby1TYpe and Ttype='H')
+or (Ttype=Lagby1TYpe and Ttype='L')) or Leadby1TYpe is null or Lagby1TYpe is null;
+
+create table trendReversal as 
+select quDT,qu,Ttype,prequ,
+(case when Ttype='L' and qu  <= prequ - 3.03 then 'down'  
+		else ( case when Ttype='H' and qu >= prequ +3.03 then 'up'  else 'follow' end) end) trendType
+from 
+(select *, lag(qu,1) over(partition by Ttype order by quDT) as prequ from temp4 )
+order by quDT,qu,Ttype;
+
+3) Data validated with trading view and trend matches almost 100% 
+(but, in practical, 30% needs to ignored such us next candle 
+change its move, consider that as sideways)

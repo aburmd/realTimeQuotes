@@ -31,7 +31,7 @@ def getQuoteTWData(api,stock,stdate,enddate,duration,durationtype):
         apiVal=api
         startDate=stdate+' 09:00:00'
         endDate=frmt.getPreferTZDate('Asia/Calcutta').strftime('%Y-%m-%d %H:%M:%S')
-        url='https://api.twelvedata.com/time_series?apikey={}&start_date={}&end_date={}&interval={}{}&symbol={}&format=JSON'.format(apiVal,startDate,endDate,duration,durationtype,stock)
+        url='https://api.twelvedata.com/time_series?apikey={}&start_date={}&end_date={}&interval={}{}&symbol={}&format=JSON&prepost=True'.format(apiVal,startDate,endDate,duration,durationtype,stock)
         print(url)
         requestResponse = requests.get(url, headers=headers)
         res=requestResponse.json()['values']
