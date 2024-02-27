@@ -9,11 +9,11 @@ data = {
       },
       "To": [
         {
-          "Email": "abudigitalworld@gmail.com",
+          "Email": "huraira86@gmail.com",
           "Name": "AbuDigital"
         },
         {
-          "Email": "huraira86@gmail.com",
+          "Email": "abudigitalworld@gmail.com",
           "Name": "Abu"
         }
       ],
